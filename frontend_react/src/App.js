@@ -4,6 +4,7 @@ import './index.css';
 import TrendsPreview from './components/TrendsPreview';
 import GenerateButton from './components/GenerateButton';
 import DownloadLink from './components/DownloadLink';
+import PdfPreview from './components/PdfPreview';
 import { getTrends, createReport, downloadReport } from './api';
 
 // PUBLIC_INTERFACE
@@ -151,6 +152,8 @@ function App() {
         </section>
 
         <TrendsPreview trends={trends} loading={trendsLoading} error={trendsError} />
+
+        <PdfPreview reportId={reportId} />
       </main>
 
       <footer className="footer">

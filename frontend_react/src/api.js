@@ -7,7 +7,7 @@ const API_BASE = process.env.REACT_APP_API_BASE || '';
  */
 function buildUrl(path) {
   const base = API_BASE.replace(/\/+$/, '');
-  const p = path.replace(/^\/+/, '');
+  const p = path.replace(/^\//+, '');
   return `${base}/${p}`;
 }
 
@@ -41,7 +41,7 @@ export async function createReport() {
 
 // PUBLIC_INTERFACE
 export async function downloadReport(reportId) {
-  /** Download the generated report as a blob. GET /api/reports/{id}/download */
+  /** Download the generated DOCX report as a blob. GET /api/reports/{id}/download */
   if (!reportId) throw new Error('Report ID is required for download');
   const res = await fetch(buildUrl(`/api/reports/${encodeURIComponent(reportId)}/download`), {
     method: 'GET',
@@ -51,4 +51,12 @@ export async function downloadReport(reportId) {
     throw new Error(`Failed to download report (${res.status}): ${text}`);
   }
   return res.blob();
+}
+
+// PUBLIC_INTERFACE
+export function getReportPdfUrl(reportId, inline = true) {
+  /** Build the URL for PDF preview/download. GET /api/reports/{id}/pdf[?inline=true] */
+  if (!reportId) return '';
+  const query = inline ? '?inline=true' : '';
+  return buildUrl(`/api/reports/${encodeURIComponent(reportId)}/pdf${query}`);
 }
